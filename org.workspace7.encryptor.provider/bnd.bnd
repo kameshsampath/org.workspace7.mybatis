@@ -13,9 +13,8 @@ Bundle-Description: 				\
 Private-Package:  \
 	org.workspace7.encryptor.provider
 	
--buildpath: \
-	osgi.enroute.base.api;version=1.0,\
-	org.apache.servicemix.bundles.jasypt
+-buildpath:  \
+	osgi.enroute.base.api;version=1.0
 	
 -testpath: \
 	osgi.enroute.junit.wrapper;version=4.12
