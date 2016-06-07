@@ -1,0 +1,30 @@
+#
+#  APPLICATION
+#
+
+Bundle-Version: 1.0.0.${tstamp}
+Bundle-Description: Crude MyBatis enRoute Applicaion
+
+Private-Package:  \
+	org.workspace7.mybatis2.application
+
+EnRoute-Application: 	org.workspace7.mybatis2
+JPM-Command:			mybats2
+
+-includeresource: \
+	{readme.md}, \
+	{configuration=configuration}, \
+	{static=static}, \
+	{resources=\},\
+	web=web
+
+-buildpath: \
+	osgi.enroute.base.api,\
+	org.mybatis.mybatis;version=3.4,\
+	osgi.enroute.configurer.simple.provider,\
+	org.ops4j.pax.jdbc.config;version=0.9,\
+	org.ops4j.pax.jdbc.mariadb;version=0.9
+	
+-testpath: \
+	osgi.enroute.junit.wrapper;version=4.12
+Bundle-Name: Crude MyBatis enRoute Applicaion

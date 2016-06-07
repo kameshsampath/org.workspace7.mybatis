@@ -1,0 +1,11 @@
+[
+	{
+		"service.factoryPid": "org.ops4j.datasource",
+		"service.pid": "org.ops4j.datasource.demodbds",
+		"dataSourceName": "demodbDS",
+		"osgi.jdbc.driver.name": "mariadb",
+		"user": "demo",
+		"password": "demo",
+		"databaseName": "demodb"
+	}
+]
