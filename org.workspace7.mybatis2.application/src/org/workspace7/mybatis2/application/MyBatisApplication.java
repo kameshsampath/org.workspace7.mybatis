@@ -4,11 +4,10 @@ import javax.sql.DataSource;
 
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
@@ -24,10 +23,10 @@ import osgi.enroute.webserver.capabilities.RequireWebServerExtender;
 @RequireBootstrapWebResource(resource = "css/bootstrap.css")
 @RequireWebServerExtender
 @RequireConfigurerExtender
-@Component(name = "org.workspace7.mybatis2")
-public class Mybatis2Application implements REST {
+@Component(name = "org.workspace7.mybatis")
+public class MyBatisApplication implements REST {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Mybatis2Application.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MyBatisApplication.class);
 
 	DataSource dataSource;
 
@@ -36,26 +35,26 @@ public class Mybatis2Application implements REST {
 	Configuration configuration;
 	SqlSessionFactory sqlSessionFactory;
 
-	@Activate
-	public void activated(BundleContext bundleContext) {
-		System.out.println("Mybatis2Application.activated()");
-	}
-
 	public String getUpper(String strId) {
 		LOGGER.info("Getting Persons ..");
 		Person person = new Person();
+		SqlSession sqlSession = null;
 		try {
 			long personId = Long.parseLong(strId);
-			person = sqlSessionFactory.openSession().selectOne(PersonMapper.class.getName() + "selectPerson", personId);
+			sqlSession = sqlSessionFactory.openSession();
+			person = sqlSession.selectOne(
+					PersonMapper.class.getName()+".selectPerson", personId);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+		} finally {
+			sqlSession.close();
 		}
 		return person.toString();
 	}
 
 	@Reference
 	public void setDataSource(DataSource dataSource) {
-		LOGGER.info("Setting DataSource");
+		LOGGER.debug("Setting DataSource");
 		this.dataSource = dataSource;
 		// Dirty and Boilerplate code
 		environment = new Environment("osgi", new JdbcTransactionFactory(), dataSource);
