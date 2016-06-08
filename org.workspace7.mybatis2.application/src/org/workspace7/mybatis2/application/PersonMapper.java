@@ -12,6 +12,7 @@ public interface PersonMapper {
 
 	@Select("SELECT * FROM PERSONS where id = #{id}")
 	@Results({
+		@Result(property="personId",column="id"),
 		@Result(property="firstName",column="first_name"),
 		@Result(property="lastName",column="last_name")
 	})
